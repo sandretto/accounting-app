@@ -18,21 +18,5 @@ namespace WorkAccountingApp.Models
         {
             return $"{FirstName} {LastName}";
         }
-
-        public string Team
-        {
-            get
-            {
-                return IsNightShift ? "Первая" : "Вторая";
-            }
-        }
-
-        public string Shift
-        {
-            get
-            {
-                return IsNightShift ? "с 20:00 до 8:00" : "с 8 до 20:00";
-            }
-        }
     }
 }

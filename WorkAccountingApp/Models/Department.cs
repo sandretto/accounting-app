@@ -13,7 +13,5 @@ namespace WorkAccountingApp.Models
         [Required]
         public int CityId { get; set; }
 
-        public virtual ICollection<Employee> Employees { get; private set; } =
-            new ObservableCollection<Employee>();
     }
 }
