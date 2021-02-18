@@ -4,14 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkAccountingApp" 
-        xmlns:vm="clr-namespace:WorkAccountingApp.ViewModels"
+        xmlns:vm="clr-namespace:WorkAccountingApp.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         WindowStyle="ThreeDBorderWindow"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         Title="Учет сотрудников по сменам" Height="400" Width="720">
-    <Window.DataContext>
-        <vm:AccountingViewModel/>
-    </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,10 +19,16 @@
     <StackPanel 
         Orientation="Vertical" 
         Background="DimGray">
+        <Menu Grid.ColumnSpan="2" >
+            <MenuItem Header="Файл">
+                <MenuItem Header="Сохранить на диск" Command="{Binding SaveToJson}" />
+                <MenuItem Header="Сохранить в базу" Command="{Binding SaveToSql}" />
+            </MenuItem>
+        </Menu>
         <StackPanel 
             Orientation="Vertical" 
-            Margin="0" 
-            Height="205">
+            Margin="0, 50, 0, 0" 
+            Height="150">
             <StackPanel 
                 Orientation="Horizontal">
                 <Label 
@@ -59,6 +62,11 @@
                     Margin="50,20,0,0" 
                     VerticalAlignment="Top" 
                     Width="150">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </ComboBox>
                 <ComboBox 
                     ItemsSource="{Binding Departments}" 
@@ -106,21 +114,6 @@
                 Margin="20,80,0,0" 
                 Height="20" 
                 Width="100"/>
-            <StackPanel Orientation="Vertical" 
-                    Margin="20,0,0,0" >
-                <Button Command="{Binding SaveToJson }" 
-                    Content="Сохранить в базу" 
-                    Margin="0,30,0,0" 
-                    VerticalAlignment="Top" 
-                    Height="30" 
-                    Width="120"></Button>
-                <Button Command="{Binding SaveToDb }" 
-                    Content="Сохранить на диск" 
-                    Margin="0,20,0,0" 
-                    VerticalAlignment="Top" 
-                    Height="30" 
-                    Width="120"></Button>
-            </StackPanel>
         </StackPanel>
     </StackPanel>
 </Window>
