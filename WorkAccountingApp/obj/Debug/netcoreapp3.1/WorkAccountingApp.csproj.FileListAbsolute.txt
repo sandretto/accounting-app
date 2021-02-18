@@ -79,4 +79,4 @@ Q:\Test_Tasks\WorkAccountingApp\WorkAccountingApp\bin\Debug\netcoreapp3.1\runtim
 Q:\Test_Tasks\WorkAccountingApp\WorkAccountingApp\bin\Debug\netcoreapp3.1\Humanizer.dll
 Q:\Test_Tasks\WorkAccountingApp\WorkAccountingApp\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 Q:\Test_Tasks\WorkAccountingApp\WorkAccountingApp\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
-Q:\Test_Tasks\WorkAccountingApp\WorkAccountingApp\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+Q:\Test_Tasks\WorkAccountingApp\WorkAccountingApp\bin\Debug\netcoreapp3.1\Microsoft.Xaml.Behaviors.dll

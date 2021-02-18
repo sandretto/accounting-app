@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using WorkAccountingApp.Models;
+using WorkAccountingApp.Utility;
 using WorkAccountingApp.ViewModels;
 
 namespace WorkAccountingApp
@@ -11,7 +13,9 @@ namespace WorkAccountingApp
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new AccountingViewModel();
+            DataContext = new AccountingViewModel(
+                new DialogService(), 
+                new JsonFileService<SelectedInformation>());
         }
     }
 }
