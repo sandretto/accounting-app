@@ -9,6 +9,7 @@ namespace WorkAccountingApp.DataManipulation
         public DbSet<City> Cities { get; set; } 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<SelectedInformation> SelectedInformation { get; set; }
 
         public EFDbContext()
         {
