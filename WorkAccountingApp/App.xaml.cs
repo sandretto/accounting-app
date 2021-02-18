@@ -1,0 +1,38 @@
+﻿using Ninject;
+using System.Windows;
+
+namespace WorkAccountingApp
+{
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
+    {
+        private IKernel container;
+
+        public App()
+        {
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            ConfigureContainer();
+            ComposeObjects();
+            Current.MainWindow.Show();
+        }
+
+        private void ConfigureContainer()
+        {
+            container = new StandardKernel();
+            //container.Bind<ICityRepository>().To<CityRepository>().InTransientScope();
+            //container.Bind<IDepartmentRepository>().To<DepartmentRepository>().InTransientScope();
+            //container.Bind<IEmployeeRepository>().To<EmployeeRepository>().InTransientScope();
+        }
+
+        private void ComposeObjects()
+        {
+            Current.MainWindow = container.Get<MainWindow>();
+        }
+    }
+}

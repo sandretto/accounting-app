@@ -1,0 +1,126 @@
+﻿<Window x:Class="WorkAccountingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkAccountingApp" 
+        xmlns:vm="clr-namespace:WorkAccountingApp.ViewModels"
+        mc:Ignorable="d"
+        WindowStyle="ThreeDBorderWindow"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Title="Учет сотрудников по сменам" Height="400" Width="720">
+    <Window.DataContext>
+        <vm:AccountingViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel 
+        Orientation="Vertical" 
+        Background="DimGray">
+        <StackPanel 
+            Orientation="Vertical" 
+            Margin="0" 
+            Height="205">
+            <StackPanel 
+                Orientation="Horizontal">
+                <Label 
+                    Content="Город" 
+                    HorizontalAlignment="Left" 
+                    Margin="50,40,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="150" 
+                    Height="15"/>
+                <Label 
+                    Content="Цех" 
+                    HorizontalAlignment="Left" 
+                    Margin="80,40,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="150"/>
+                <Label 
+                    Content="Сотрудник" 
+                    HorizontalAlignment="Left" 
+                    Margin="80,40,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="150"/>
+            </StackPanel>
+            <StackPanel 
+                Orientation="Horizontal">
+                <ComboBox 
+                    ItemsSource="{Binding Cities}" 
+                    SelectedItem="{Binding SelectedCity}"
+                    DisplayMemberPath="Name"
+                    HorizontalAlignment="Left" 
+                    Height="30" 
+                    Margin="50,20,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="150">
+                </ComboBox>
+                <ComboBox 
+                    ItemsSource="{Binding Departments}" 
+                    SelectedItem="{Binding SelectedDepartment}"
+                    DisplayMemberPath="Name"
+                    HorizontalAlignment="Left" 
+                    Height="30" 
+                    Margin="80,20,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="150"/>
+                <ComboBox 
+                    ItemsSource="{Binding Employees}"
+                    SelectedItem="{Binding SelectedEmployee}"
+                    HorizontalAlignment="Left" 
+                    Height="30" 
+                    Margin="80,20,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="150"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Height="160">
+            <Label 
+                Content="Смена:" 
+                HorizontalAlignment="Left" 
+                Margin="50,80,0,0" 
+                VerticalAlignment="Top" 
+                Width="70"/>
+            <Label 
+                Content="{Binding SelectedShift}" 
+                HorizontalAlignment="Left" 
+                Margin="10,80,0,0" 
+                VerticalAlignment="Top" 
+                Height="20" 
+                Width="100"/>
+            <Label 
+                Content="Бригада:" 
+                HorizontalAlignment="Left" 
+                Margin="30,80,0,0" 
+                VerticalAlignment="Top" 
+                Width="70"/>
+            <Label 
+                Content="{Binding SelectedTeam}" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Margin="20,80,0,0" 
+                Height="20" 
+                Width="100"/>
+            <StackPanel Orientation="Vertical" 
+                    Margin="20,0,0,0" >
+                <Button Command="{Binding SaveToJson }" 
+                    Content="Сохранить в базу" 
+                    Margin="0,30,0,0" 
+                    VerticalAlignment="Top" 
+                    Height="30" 
+                    Width="120"></Button>
+                <Button Command="{Binding SaveToDb }" 
+                    Content="Сохранить на диск" 
+                    Margin="0,20,0,0" 
+                    VerticalAlignment="Top" 
+                    Height="30" 
+                    Width="120"></Button>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>
