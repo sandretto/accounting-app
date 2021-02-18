@@ -9,11 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkAccountingApp.DataManipulation;
 using WorkAccountingApp.Models;
+using WorkAccountingApp.Utility;
 
 namespace WorkAccountingApp.ViewModels
 {
     public class AccountingViewModel : INotifyPropertyChanged
     {
+        private IFileService<SelectedInformation> fileService;
+        private IDialogService dialogService;
+        private SelectedInformation information; 
+
         private List<City> citiesList;
         private List<Department> departmentsList;
         private List<Employee> employeesList;
@@ -60,8 +65,12 @@ namespace WorkAccountingApp.ViewModels
             {
                 selectedCity = value;
                 OnPropertyChanged();
-                Departments = new ObservableCollection<Department>
-                    (departmentsList.Where(x => x.CityId == SelectedCity.Id));
+                if(SelectedCity != null)
+                {
+                    Departments = new ObservableCollection<Department>
+                        (departmentsList.Where(x => x.CityId == SelectedCity.Id));
+                }
+                else InitCollections();
             }
         }
 
@@ -73,8 +82,12 @@ namespace WorkAccountingApp.ViewModels
             {
                 selectedDepartment = value;
                 OnPropertyChanged();
-                Employees = new ObservableCollection<Employee>
-                    (employeesList.Where(x => x.DepartmentId == SelectedDepartment.Id));
+                if (SelectedDepartment != null)
+                {
+                    Employees = new ObservableCollection<Employee>
+                        (employeesList.Where(x => x.DepartmentId == SelectedDepartment.Id));
+                }
+                else InitCollections();
             }
         }
 
@@ -86,8 +99,24 @@ namespace WorkAccountingApp.ViewModels
             {
                 selectedEmployee = value;
                 OnPropertyChanged();
-                SelectedShift = SelectedEmployee.IsNightShift ? "с 20:00 до 8:00" : "с 8 до 20:00";
-                SelectedTeam = SelectedEmployee.IsNightShift ? "Первая" : "Вторая";
+                SelectedShift = ShiftType;
+                SelectedTeam = TeamType;
+            }
+        }
+
+        public string ShiftType 
+        {
+            get
+            {
+                return SelectedEmployee.IsNightShift ? "с 20:00 до 8:00" : "с 8 до 20:00";
+            }
+        }
+
+        public string TeamType
+        {
+            get
+            {
+                return SelectedEmployee.IsNightShift ? "Первая" : "Вторая";
             }
         }
 
@@ -113,8 +142,96 @@ namespace WorkAccountingApp.ViewModels
             }
         }
 
-        public AccountingViewModel()
+        private RelayCommand saveToJson; 
+        public RelayCommand SaveToJson
         {
+            get
+            {
+                return saveToJson ??= new RelayCommand(obj =>
+                  {
+                      try
+                      {
+                          if (dialogService.SaveFileDialog() == true)
+                          {
+                              AddInformationToList();
+                              fileService.Save(dialogService.FilePath, information);
+                              dialogService.ShowMessage("Файл сохранен");
+                          }
+                      }
+                      catch (Exception ex)
+                      {
+                          dialogService.ShowMessage(ex.Message);
+                      }
+                  });
+            }
+        }
+
+        private RelayCommand saveToSql;
+        public RelayCommand SaveToSql
+        {
+            get
+            {
+                return saveToSql ??= new RelayCommand(obj =>
+                {
+                    try
+                    {
+                        AddInformationToList();
+
+                        using (var context = new EFDbContext())
+                        {
+                            context.SelectedInformation.Add(information);
+                            context.SaveChanges();
+                        }
+
+                        dialogService.ShowMessage("Запись сохранена");
+                    }
+                    catch (Exception ex)
+                    {
+                        dialogService.ShowMessage(ex.Message);
+                    }
+                }); 
+            }
+        }
+
+        private RelayCommand selectionChangedCommand;
+        public RelayCommand CitySelectionChangedCommand 
+        {
+            get
+            {
+                return selectionChangedCommand ??= new RelayCommand(obj =>
+                {
+                    try
+                    {
+                        InitCollections();
+                    }
+                    catch (Exception ex)
+                    {
+                        dialogService.ShowMessage(ex.Message);
+                    }
+                });
+            }
+        }
+
+
+        private void AddInformationToList()
+        {
+            information = new SelectedInformation
+            {
+                Id = Guid.NewGuid().ToString(),
+                City = SelectedCity.Name,
+                Department = SelectedDepartment.Name,
+                Employee = SelectedEmployee.ToString(),
+                Shift = ShiftType,
+                Team = TeamType
+            };
+        }
+
+        public AccountingViewModel(IDialogService dialogService, IFileService<SelectedInformation> fileService)
+        {
+            this.dialogService = dialogService;
+            this.fileService = fileService;
+            information = new SelectedInformation();
+
             Load().Wait();
 
             InitCollections();
