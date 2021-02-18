@@ -25,9 +25,6 @@ namespace WorkAccountingApp
         private void ConfigureContainer()
         {
             container = new StandardKernel();
-            //container.Bind<ICityRepository>().To<CityRepository>().InTransientScope();
-            //container.Bind<IDepartmentRepository>().To<DepartmentRepository>().InTransientScope();
-            //container.Bind<IEmployeeRepository>().To<EmployeeRepository>().InTransientScope();
         }
 
         private void ComposeObjects()
