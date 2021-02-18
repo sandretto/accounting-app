@@ -1,0 +1,58 @@
+[
+    {
+        "DepartmentId": 2,
+        "FirstName": "Жан-Поль",
+        "Id": 1,
+        "IsNightShift": 0,
+        "LastName": "Мулер"
+    },
+    {
+        "DepartmentId": 2,
+        "FirstName": "Жан-Пьер",
+        "Id": 2,
+        "IsNightShift": 1,
+        "LastName": "Мулер"
+    },
+    {
+        "DepartmentId": 1,
+        "FirstName": "Луи",
+        "Id": 3,
+        "IsNightShift": 0,
+        "LastName": "Шарпентье"
+    },
+    {
+        "DepartmentId": 1,
+        "FirstName": "Мишель",
+        "Id": 4,
+        "IsNightShift": 1,
+        "LastName": "Шарпентье"
+    },
+    {
+        "DepartmentId": 3,
+        "FirstName": "Джанкарло",
+        "Id": 5,
+        "IsNightShift": 0,
+        "LastName": "Джепетто"
+    },
+    {
+        "DepartmentId": 3,
+        "FirstName": "Пиноккио",
+        "Id": 6,
+        "IsNightShift": 1,
+        "LastName": "Джепетто"
+    },
+    {
+        "DepartmentId": 4,
+        "FirstName": "Марта",
+        "Id": 7,
+        "IsNightShift": 0,
+        "LastName": "Шнайдер"
+    },
+    {
+        "DepartmentId": 4,
+        "FirstName": "Грета",
+        "Id": 8,
+        "IsNightShift": 1,
+        "LastName": "Шнайдер"
+    }
+]
