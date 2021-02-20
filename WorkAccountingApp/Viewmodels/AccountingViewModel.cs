@@ -218,8 +218,8 @@ namespace WorkAccountingApp.ViewModels
                     Employee = e.ToString(), 
                     Department = d.Name,
                     City = citiesList.FirstOrDefault(c => c.Id == d.CityId).Name,
-                    Shift = ShiftType(SelectedEmployee.IsNightShift),
-                    Team = TeamType(SelectedEmployee.IsNightShift)
+                    Shift = ShiftType(e.IsNightShift),
+                    Team = TeamType(e.IsNightShift)
                 });
              */
         }
