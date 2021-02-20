@@ -65,12 +65,18 @@ namespace WorkAccountingApp.ViewModels
             {
                 selectedCity = value;
                 OnPropertyChanged();
-                if(SelectedCity != null)
+                Departments.Clear();
+                Employees.Clear();
+                if (SelectedCity != null)
                 {
                     Departments = new ObservableCollection<Department>
                         (departmentsList.Where(x => x.CityId == SelectedCity.Id));
+                    if (SelectedDepartment != null)
+                    {
+                        Employees = new ObservableCollection<Employee>
+                            (employeesList.Where(x => x.DepartmentId == SelectedDepartment.Id));
+                    }
                 }
-                else InitCollections();
             }
         }
 
@@ -82,12 +88,12 @@ namespace WorkAccountingApp.ViewModels
             {
                 selectedDepartment = value;
                 OnPropertyChanged();
+                Employees.Clear();
                 if (SelectedDepartment != null)
                 {
                     Employees = new ObservableCollection<Employee>
                         (employeesList.Where(x => x.DepartmentId == SelectedDepartment.Id));
                 }
-                else InitCollections();
             }
         }
 
@@ -99,25 +105,22 @@ namespace WorkAccountingApp.ViewModels
             {
                 selectedEmployee = value;
                 OnPropertyChanged();
-                SelectedShift = ShiftType;
-                SelectedTeam = TeamType;
+                if (SelectedEmployee != null)
+                {
+                    SelectedShift = ShiftType(SelectedEmployee.IsNightShift);
+                    SelectedTeam = TeamType(SelectedEmployee.IsNightShift);
+                }
             }
         }
 
-        public string ShiftType 
+        public string ShiftType(bool isNightShift) 
         {
-            get
-            {
-                return SelectedEmployee.IsNightShift ? "с 20:00 до 8:00" : "с 8 до 20:00";
-            }
+            return SelectedEmployee.IsNightShift ? "с 20:00 до 8:00" : "с 8 до 20:00";
         }
 
-        public string TeamType
+        public string TeamType(bool isNightShift)
         {
-            get
-            {
-                return SelectedEmployee.IsNightShift ? "Первая" : "Вторая";
-            }
+            return SelectedEmployee.IsNightShift ? "Первая" : "Вторая";
         }
 
         private string selectedShift;
@@ -193,26 +196,6 @@ namespace WorkAccountingApp.ViewModels
             }
         }
 
-        private RelayCommand selectionChangedCommand;
-        public RelayCommand CitySelectionChangedCommand 
-        {
-            get
-            {
-                return selectionChangedCommand ??= new RelayCommand(obj =>
-                {
-                    try
-                    {
-                        InitCollections();
-                    }
-                    catch (Exception ex)
-                    {
-                        dialogService.ShowMessage(ex.Message);
-                    }
-                });
-            }
-        }
-
-
         private void AddInformationToList()
         {
             information = new SelectedInformation
@@ -221,9 +204,24 @@ namespace WorkAccountingApp.ViewModels
                 City = SelectedCity.Name,
                 Department = SelectedDepartment.Name,
                 Employee = SelectedEmployee.ToString(),
-                Shift = ShiftType,
-                Team = TeamType
+                Shift = ShiftType(SelectedEmployee.IsNightShift),
+                Team = TeamType(SelectedEmployee.IsNightShift)
             };
+
+            /*
+                //если имелось в виду выбирать несколько значений:
+
+                var info = employeesList
+                .Join(departmentsList, e => e.DepartmentId, d => d.Id,
+                (e, d) => new {
+                    Id = Guid.NewGuid().ToString(),
+                    Employee = e.ToString(), 
+                    Department = d.Name,
+                    City = citiesList.FirstOrDefault(c => c.Id == d.CityId).Name,
+                    Shift = ShiftType(SelectedEmployee.IsNightShift),
+                    Team = TeamType(SelectedEmployee.IsNightShift)
+                });
+             */
         }
 
         public AccountingViewModel(IDialogService dialogService, IFileService<SelectedInformation> fileService)

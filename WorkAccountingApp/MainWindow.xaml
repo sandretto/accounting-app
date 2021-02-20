@@ -62,11 +62,6 @@
                     Margin="50,20,0,0" 
                     VerticalAlignment="Top" 
                     Width="150">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </ComboBox>
                 <ComboBox 
                     ItemsSource="{Binding Departments}" 
